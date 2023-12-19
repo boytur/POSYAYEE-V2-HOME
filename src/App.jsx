@@ -3,7 +3,7 @@ import Home from "./components/Home/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import News from "./components/News/News";
 import Pricing from "./components/Pricing/Pricing";
-import Register from "./components/Register/register";
+import Register from "./components/Register/Register";
 import Step2 from "./components/Register/Step2";
 import Step3 from "./components/Register/Step3";
 import NotFound from "./components/NotFound/NotFound";
