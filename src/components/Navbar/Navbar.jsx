@@ -7,7 +7,7 @@ import {
 } from "react-icons/io5";
 import { FcPhone } from "react-icons/fc";
 import { MdOutlineRateReview } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
   const [navShow, setNavShow] = useState(false);
@@ -40,6 +40,12 @@ function Navbar() {
   const getActiveButton = (route) => {
     return location.pathname === route ? "text-[#4C49ED]" : "";
   };
+
+  const navigate = useNavigate();
+  const signup = () =>{
+    navigate('/register');
+  }
+
   return (
     <div className="w-full h-14 flex justify-center z-50 relative">
       <div
@@ -135,7 +141,7 @@ function Navbar() {
               <li className="lg:flex">
                 <li className="pb-5 lg:pb-0">
                   <div className="flex items-center gap-4 lg:text-[.8rem] px-2 h-9 lg:h-14">
-                    <button className="lg:w-[125px] w-full h-[50px] lg:h-[46px] rounded-[6px] bg-[#DBDBDB] text-black hover:bg-[#b6b6b6]">
+                    <button onClick={()=> signup()} className="lg:w-[125px] w-full h-[50px] lg:h-[46px] rounded-[6px] bg-[#DBDBDB] text-black hover:bg-[#b6b6b6]">
                       <p>สมัครเป็นร้านค้า</p>
                     </button>
                   </div>
