@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-#home {
+#root {
   background-image: url('./assets/bg-home.webp');
   height: 120vh;
   background-repeat: no-repeat;
