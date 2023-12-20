@@ -3,7 +3,7 @@ import { IoStorefrontOutline } from "react-icons/io5";
 import { FaArrowRight } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Step2() {
   // Check if the name has been entered before to prevent skipping route step1
@@ -47,12 +47,12 @@ function Step2() {
   };
 
   return (
-    <div className="w-full justify-center">
+    <div className="w-full justify-center bg-white" >
       <nav className="flex h-[4rem] w-full justify-between items-center md:px-10 px-2">
-        <div className=" cursor-pointer">
+        <Link to = "/" className=" cursor-pointer">
           <span className="text-[2.2rem] font-bold text-[#4C49ED]">POS</span>
           <span className="text-[2.2rem] font-bold">YAYEE</span>
-        </div>
+        </Link>
         <div className="rounded-[6px] hover:scale-105 underline">
           <a
             className="lg:w-[125px] w-full h-[50px] lg:h-[46px]"

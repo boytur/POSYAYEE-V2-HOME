@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { FaArrowRight, FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { MdAlternateEmail } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import Swal from "sweetalert2";
 
@@ -57,10 +57,10 @@ function Step3() {
   return (
     <div className="bg-white w-full">
       <nav className="flex h-[4rem] w-full justify-between items-center md:px-10 px-2">
-        <div className=" cursor-pointer">
+        <Link to = "/" className=" cursor-pointer">
           <span className="text-[2.2rem] font-bold text-[#4C49ED]">POS</span>
           <span className="text-[2.2rem] font-bold">YAYEE</span>
-        </div>
+        </Link>
         <div className="rounded-[6px] hover:scale-105 underline">
           <a
             className="lg:w-[125px] w-full h-[50px] lg:h-[46px]"
