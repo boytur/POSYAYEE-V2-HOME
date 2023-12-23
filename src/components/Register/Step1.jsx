@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 function Step1() {
   const navigate = useNavigate();
 
-  const [selectedPackage, setSelectedPackage] = useState(null);
+  const [selectedPackage, setSelectedPackage] = useState(localStorage.getItem("packageId")||null);
   const handlePackageClick = (packageId) => {
     setSelectedPackage(packageId);
     localStorage.setItem("packageId", packageId);
@@ -41,9 +41,9 @@ function Step1() {
               className="w-full items-end flex text-center h-[15rem] cursor-pointer px-2 md:px-0 "
             >
               <div
-                className={`w-full h-[90%] border bg-white rounded-lg hover:bg-[#e4e3ff91] hover:border-[#4C49ED] ${
+                className={`w-full h-[90%] border bg-white rounded-lg  hover:border-[#4C49ED] ${
                   selectedPackage == "1"
-                    ? "border-[#4C49ED] bg-[#e4e3ffeb] md:scale-105"
+                    ? "border-[#4C49ED] bg-[#cccafd4a] md:scale-105"
                     : ""
                 }`}
               >
@@ -68,9 +68,9 @@ function Step1() {
             >
               <div
                 onClick={() => handlePackageClick("2")}
-                className={`w-full h-[90%] border bg-white rounded-lg hover:bg-[#e4e3ff91] hover:border-[#4C49ED] ${
+                className={`w-full h-[90%] border bg-white rounded-lg hover:border-[#4C49ED] ${
                   selectedPackage == "2"
-                    ? "border-[#4C49ED] bg-[#e4e3ffeb] md:scale-105"
+                    ? "border-[#4C49ED] bg-[#cccafd4a] md:scale-105"
                     : ""
                 }`}
               >
@@ -92,16 +92,16 @@ function Step1() {
               className="w-full items-end flex text-center h-[15rem] cursor-pointer px-2 md:px-0"
             >
               <div
-                className={`w-full h-[90%] border bg-white rounded-lg hover:bg-[#e4e3ff91] hover:border-[#4C49ED] ${
+                className={`w-full h-[90%] border bg-white rounded-lg hover:border-[#4C49ED] ${
                   selectedPackage == "3"
-                    ? "border-[#4C49ED] bg-[#e4e3ffeb] md:scale-105"
+                    ? "border-[#4C49ED] bg-[#cccafd4a] md:scale-105"
                     : ""
                 }`}
               >
                 <div className="flex flex-col">
                   <div className="pt-6">
                     <h1 className=" font-bold text-[1.5rem]">ร้านชำใหญ่</h1>
-                    <h1 className=" font-bold text-[4rem] text-[#4C49ED]">
+                    <h1 className=" font-bold text-[4rem]  text-[#4C49ED]">
                       ฿499
                     </h1>
                     <p>นาน 30 วัน</p>

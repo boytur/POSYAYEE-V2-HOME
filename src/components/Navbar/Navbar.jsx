@@ -155,7 +155,7 @@ function Navbar() {
                       rel="noopener noreferrer"
                     >
                       <button className="lg:w-[125px] w-full h-[50px] lg:h-[46px] rounded-[6px] bg-[#4C49ED] text-white hover:bg-[#4c49edc0]">
-                        <p>เข้าสู่ระบบร้านค้า</p>
+                        <p>เข้าสู่ระบบ (เดิม)</p>
                       </button>
                     </a>
                   </div>
