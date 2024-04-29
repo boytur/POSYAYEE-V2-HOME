@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Navbar from "../Navbar/Navbar";
-import Footer from "../Footer/Footer";
+import Navbar from "../../components/Navbar/Navbar";
+import Footer from "../../components/Footer/Footer";
 
 function Pricing() {
   const [scroll, setScroll] = useState(false);

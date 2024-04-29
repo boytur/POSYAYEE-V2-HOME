@@ -1,5 +1,5 @@
+import Navbar from "../../components/Navbar/Navbar";
 import Hero from "./Hero";
-import Navbar from "../Navbar/Navbar";
 import SystemAbility from "./SystemAbility";
 
 function Home() {

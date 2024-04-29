@@ -4,8 +4,8 @@
 @tailwind utilities;
 
 #root {
-  background-image: url('./assets/bg-home.webp');
-  height: 120vh;
+  /* background-image: url('./assets/bg-home.webp'); */
+  height: 100vh;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -15,4 +15,29 @@
 }
 html {
   scroll-behavior: smooth;
+}
+
+.loader {
+  width: 10px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  animation: l5 1s infinite linear alternate;
+}
+@keyframes l5 {
+  0% {
+    box-shadow: 20px 0 #4c49ed, -20px 0 #4c49ed;
+    background: #4c49ed;
+  }
+  33% {
+    box-shadow: 20px 0 #4c49ed, -20px 0 #4c49ed;
+    background: #4c49ed;
+  }
+  66% {
+    box-shadow: 20px 0 #ffff, -20px 0 #ffff;
+    background: #ffff;
+  }
+  100% {
+    box-shadow: 20px 0 #ffff, -20px 0 #ffff;
+    background: #ffff;
+  }
 }

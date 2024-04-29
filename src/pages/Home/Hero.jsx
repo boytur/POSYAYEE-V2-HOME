@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Framer Motion variants for animation
 const container = {
@@ -12,10 +14,22 @@ const container = {
     },
   },
 };
-
-// Set document title
-document.title = "POSYAYEE 🛒 หน้าหลัก";
 function Hero() {
+
+  const navigate = useNavigate();
+  // Set document title
+  document.title = "POSYAYEE 🛒 หน้าหลัก";
+  // eslint-disable-next-line no-unused-vars
+  const [refreshToken, setRefreshToken] = useState(localStorage.getItem("refresh_token"));
+
+  const handleFreePackages = () => {
+    localStorage.setItem("package_id", 1);
+    navigate("/register/step2");
+  };
+
+  useEffect(() => {
+
+  }, [])
   return (
     <div id="home" className="w-full flex justify-center">
       <div className="w-full md:h-[35rem] lg:flex  mt-6 max-w-screen-xl">
@@ -60,8 +74,11 @@ function Hero() {
               </span>
             </div>
             <div className="lg:pl-3 lg:flex lg:flex-row lg:gap-6 flex flex-col px-2">
-              <button className="mt-4 hover:bg-[#4c49eddb] lg:w-[250px] h-[55px] border rounded-[115.385px;] bg-[#4C49ED] text-white shadow-md">
-                <p>ทดลองใช้งานฟรี 30 วัน</p>
+              <button
+                onClick={() => handleFreePackages()}
+                className="mt-4 hover:bg-[#4c49eddb] lg:w-[250px] h-[55px] border rounded-[115.385px;] bg-[#4C49ED] text-white shadow-md"
+              >
+                {!refreshToken ? <p>ทดลองใช้งานฟรี 30 วัน</p> : <p>ไปที่ร้านของฉัน</p>}
               </button>
               <button
                 className="mt-4 lg:w-[250px] h-[55px] rounded-[115.385px;] text-[#4C49ED] shadow-md hover:bg-[#dbdbdb69]"

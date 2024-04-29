@@ -6,7 +6,7 @@ import { GiCubeforce } from "react-icons/gi";
 import { CiEdit } from "react-icons/ci";
 import { CgExtensionAdd } from "react-icons/cg";
 import { IoAnalytics } from "react-icons/io5";
-import Footer from "../Footer/Footer";
+import Footer from "../../components/Footer/Footer";
 
 function ExampleUse() {
   // Framer Motion variants for animation
