@@ -8,12 +8,12 @@ import Step2 from "./pages/Register/Step2";
 import Step3 from "./pages/Register/Step3";
 import NotFound from "./pages/NotFound/NotFound";
 import { useEffect, useState } from "react";
+import { getUuid } from "./libs/localStrage";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   useEffect(() => {
-    const refresh_token = localStorage.getItem("refresh_token");
-    if (!refresh_token) {
+    if (!getUuid()) {
       setIsAuthenticated(false);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
