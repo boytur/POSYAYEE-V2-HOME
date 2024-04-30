@@ -8,6 +8,8 @@ import { MdOutlinePhoneAndroid } from "react-icons/md";
 import Swal from "sweetalert2";
 import Axios from "../../libs/Axios";
 import OtpTimer from "otp-timer";
+import GetOrderCheckoutPage from "../../libs/GetOrderCheckoutPage";
+import ReCAPTCHA from "react-google-recaptcha";
 
 function Step3() {
 
@@ -15,13 +17,17 @@ function Step3() {
   let store_name = localStorage.getItem("store_name");
 
   const [loading, setLoading] = useState(false);
+  const [otpLoading, setOtpLoading] = useState(false);
+
   const [otpExpiration, setOtpExpiration] = useState(15 * 60 * 1000);
 
   const [otpPopup, setOtpPopup] = useState(false);
   const [otpDetail, setOtpDetail] = useState();
   const [user, setUser] = useState();
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
+
   const inputsRef = useRef([]);
+  const recaptchaRef = useRef();
 
   useEffect(() => {
     if (store_name == null || "") {
@@ -59,9 +65,55 @@ function Step3() {
     user_password_confirm: "",
   });
 
-  //Validate data
+  // Verify ReCAPTCHA
+  const verifyReCAPTCHA = async () => {
+
+    const isVerified = await recaptchaRef.current.executeAsync();
+    if (isVerified) {
+      try {
+
+        setLoading(true);
+        const response = await Axios.post(`/api/auth/get-otp-register`, payLoad);
+
+        if (response.status === 200) {
+          setUser(response.data.user);
+          setOtpDetail(response.data.otp);
+          setLoading(false);
+          setTimeout(() => {
+            setOtpPopup(false);
+            Swal.fire({
+              icon: "warning",
+              title: "รหัส OTP หมดอายุ",
+              text: "กรุณากดส่ง OTP ใหม่",
+            });
+          }, otpExpiration);
+          setOtpPopup(true);
+        }
+
+        recaptchaRef.current.reset();
+
+      }
+      catch (err) {
+        setLoading(false);
+        console.error(err);
+        Swal.fire({
+          title: err.response?.data?.message || "เกิดข้อผิดพลาด",
+          icon: 'error',
+        });
+
+        recaptchaRef.current.reset();
+      }
+    }
+    return;
+  };
+
+  const handleNextStepWithReCAPTCHA = async () => {
+    await verifyReCAPTCHA();
+  };
+
+  // Get OTP for registration
   const handleNextStep3 = async () => {
-    console.log(payLoad);
+
     if (!payLoad.user_password || !payLoad.user_password_confirm) {
       Swal.fire({
         title: "ยังไม่ได้กรอกรหัสผ่าน",
@@ -70,6 +122,7 @@ function Step3() {
       });
       return;
     }
+
     if (payLoad.user_password !== payLoad.user_password_confirm) {
       Swal.fire({
         title: "รหัสผ่านไม่ตรงกัน!",
@@ -96,45 +149,17 @@ function Step3() {
       });
       return;
     }
-    try {
-      setLoading(true);
-      const response = await Axios.post(`/api/auth/get-otp-register`, payLoad);
-      if (response.status === 200) {
-        setUser(response.data.user);
-        setOtpDetail(response.data.otp);
-        setLoading(false);
-        setTimeout(() => {
-          setOtpPopup(false);
-          Swal.fire({
-            icon: "warning",
-            title: "รหัส OTP หมดอายุ",
-            text: "กรุณากดส่ง OTP ใหม่",
-          });
-        }, otpExpiration);
-        setOtpPopup(true);
-      }
-
-      setPhoneNumber("");
-      setPayLoad({
-        store_name: "",
-        package_id: "",
-        user_phone: "",
-        user_accepted: false,
-        user_password: "",
-        user_password_confirm: "",
-      });
-    }
-    catch (err) {
-      console.error(err);
-      setLoading(false);
-    }
+    await handleNextStepWithReCAPTCHA();
   };
 
   // Verify OTP 
   const handleVerifyOtp = async () => {
+
     if (!user || !otpDetail || !otp) {
       return;
     }
+    setOtpLoading(true);
+
     try {
       const verifyOtp = await Axios.post(`/api/auth/register`, {
         store_name: user.store_name,
@@ -147,19 +172,22 @@ function Step3() {
       });
 
       if (verifyOtp.status === 201) {
+
+        setOtpLoading(false);
         setOtpPopup(false);
+
         Swal.fire({
           title: verifyOtp.data.message,
           icon: 'success',
-        }).then((result) => {
+        }).then(async (result) => {
           if (result.isConfirmed || result.isDismissed) {
-            window.location.href = '/';
-            window.location.reload();
+            await GetOrderCheckoutPage(verifyOtp?.data);
           }
         });
       }
+
     } catch (err) {
-      console.error("Err while verify otp: ", err);
+      setOtpLoading(false);
       Swal.fire({
         'title': err.response.data.message,
         'icon': 'error',
@@ -187,6 +215,8 @@ function Step3() {
     }
   };
 
+
+
   return (
     <div className="bg-white w-full">
       {/* OTP Popup */}
@@ -202,7 +232,7 @@ function Step3() {
                         <p>ยืนยันเบอร์โทรศัพท์</p>
                       </div>
                       <div className="flex flex-row text-sm font-medium text-gray-400">
-                        <p>รหัส OTP ได้ส่งไปที่ {user.user_phone}</p>
+                        <p>รหัส OTP ได้ส่งไปที่ {user?.user_phone}</p>
                       </div>
                       <p className="text-[1.5rem] text-black"> Refno: {otpDetail?.result?.ref}</p>
                       <div className="flex gap-2">
@@ -241,17 +271,19 @@ function Step3() {
                                   onClick={() => handleVerifyOtp()}
                                   className="cursor-pointer flex flex-row items-center justify-center text-center w-full border rounded-xl outline-none py-5 bg-[#4C49ED] border-none text-white text-sm shadow-sm"
                                 >
-                                  ยืนยันเบอร์โทรศัพท์
+                                  {otpLoading ? <span className="loader bg-white"></span> : "ยืนยันเบอร์โทรศัพท์"}
                                 </div>
                               )}
                             </div>
                             <div className="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-gray-500">
                               <p>ฉันยังไม่ได้รับ OTP ง่ะ?</p>{' '}
+
                               <div
                                 className="flex flex-row items-center text-[#4C49ED] hover:underline"
                               >
                                 ส่ง OTP ใหม่
                               </div>
+
                             </div>
                           </div>
                         </div>
@@ -290,7 +322,7 @@ function Step3() {
           style={{ height: "calc(100vh - 5.2rem" }}
           className=" w-full max-w-screen-xl"
         >
-          {/* Register emsil and pass */}
+          {/* Register email and pass */}
           <div className="w-full flex justify-center h-full">
             <div className="max-w-xl w-full">
               <div className="w-full pt-4">
@@ -321,7 +353,7 @@ function Step3() {
                   }
                   className="appearance-none block w-full text-gray-700 border rounded py-3 px-2 mb-3 leading-tight focus:outline-[#4C49ED] bg-white"
                   id="email"
-                  type="number"
+                  type="text"
                   autoComplete="none"
                   placeholder="09X-XXX-XXXX"
                 />
@@ -389,13 +421,20 @@ function Step3() {
               </div>
 
               {/* Next step */}
-              <div className="w-full md:px-6 px-10 h-[3.5rem] mt-10 text-white">
+              <div className="w-full md:px-6 px-10 h-[3.5rem] mt-3 text-white">
+
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  className="mb-2"
+                  size="invisible"
+                  sitekey="6LePqMspAAAAABj-1v914ehVvLnahraPZpWW7f0H"
+                />
+
                 <button
                   onClick={() => handleNextStep3()}
                   className=" bg-[#4C49ED] w-full hover:bg-[#4c49edcf] h-full rounded-md flex items-center justify-center gap-2"
                 >
-                  {loading ? <span className="loader bg-white"></span>
-                    : <><p>ขั้นตอนต่อไป</p><FaArrowRight /></>}
+                  {loading ? <span className="loader bg-white"></span> : <><p>ขั้นตอนต่อไป</p><FaArrowRight /></>}
                 </button>
               </div>
             </div>
