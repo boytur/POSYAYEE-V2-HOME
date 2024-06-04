@@ -266,7 +266,7 @@ function Navbar() {
                       rel="noopener noreferrer"
                     >
                       <button className="lg:w-[125px] w-full h-[50px] lg:h-[46px] rounded-[6px] bg-[#4C49ED] text-white hover:bg-[#4c49edc0]">
-                        <p>เข้าสู่ระบบ (เดิม)</p>
+                        <p>เข้าสู่ระบบร้านค้า</p>
                       </button>
                     </a>
                   </div>
@@ -277,7 +277,10 @@ function Navbar() {
                 <div className="lg:flex items-center h-full">
                   <div className="lg:flex pb-5 lg:pb-0 lg:flex-row flex-col w-full justify-center hidden">
                     <button className=" w-[6rem] text-[0.8rem] rounded-md underline">
-                      <p>เข้าสู่ระบบร้านค้า</p>
+                      <a                       
+                      href="https://sale.posyayee.shop"
+                      target="_blank"
+                      rel="noopener noreferrer">เข้าสู่ระบบร้านค้า</a>
                     </button>
                     <div className="lg:w-[100px] w-full justify-center items-center flex h-[50px] lg:h-[46px] text-black/80 underline cursor-pointer">
                       <div className='relative w-[2.5rem] h-[2.5rem] border-[#4C49ED] border-[2px] rounded-full'>
