@@ -9,6 +9,7 @@ import Step3 from "./pages/Register/Step3";
 import NotFound from "./pages/NotFound/NotFound";
 import { useEffect, useState } from "react";
 import { getUuid } from "./libs/localStrage";
+import UnderDevelopment from "./components/UnderDevelopment";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -21,6 +22,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <UnderDevelopment/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/pricing" element={<Pricing />} />

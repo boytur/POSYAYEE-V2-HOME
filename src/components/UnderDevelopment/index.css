@@ -1,0 +1,15 @@
+.moving-text {
+    display: inline-block;
+    white-space: nowrap;
+    animation: moveText 20s linear infinite;
+  }
+  
+  @keyframes moveText {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
