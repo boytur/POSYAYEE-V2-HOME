@@ -8,8 +8,8 @@ services:
     env_file:
       - .env
     networks:
-      - webnet
+      - webnet-posyayee-home
     restart: unless-stopped
 
 networks:
-  webnet:
+  webnet-posyayee-home:
