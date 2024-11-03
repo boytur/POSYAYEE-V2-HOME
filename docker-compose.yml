@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  home-posyayee:
+    build: .
+    ports:
+      - "${PRODUCTION_PORT}:80"
+    env_file:
+      - .env
+    networks:
+      - webnet
+    restart: unless-stopped
+
+networks:
+  webnet:
